@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<!-- TO CHANGE THE MENU LATER: edit the list in script.js, not this file. -->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamp Kape MNL | Menu</title>
+  <meta name="description" content="Browse the Kamp Kape MNL menu: coffee, non-coffee drinks, and pastries.">
+
+  <link rel="stylesheet" href="style.css">
+  <!-- SCRIPTS: uncomment once script.js exists. Required for the menu to display -->
+  <!-- <script src="script.js" defer></script> -->
+</head>
+
+<body>
+
+  <header id="site-header">
+    <a href="index.html" id="logo">
+      <img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/640114021_122094841971288350_2284737999150468777_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx2000x2000&amp;ctp=s2000x2000&amp;_nc_cat=107&amp;_nc_map=urlgen_bucketless&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeGNLHO1jwr1we4lg1iIo52_di0075TkURB2LTTvlORREOe4Qle4yDIjGZel0OZofsEOoiTboHbAn5RkEdRspNF6&amp;_nc_ohc=LRAyBTvbKVcQ7kNvwENy0ET&amp;_nc_oc=Adp23PDcijnLNaODMb79QVyTWgglpaekXdaxc2fYryzzlRsPLAAPwTf8OgvJs5EnxyQ&amp;_nc_zt=23&amp;_nc_ht=scontent.fmnl17-5.fna&amp;_nc_gid=dOTGK9VfHka47zWiitBhiw&amp;_nc_ss=7b2a8&amp;oh=00_AQT4YB3ZANghqmPPOdtCKN1YpKKQVHfMQNSeaRfS6-JGzw&amp;oe=6B0845F8"
+           alt="Kamp Kape MNL logo" width="50" height="50">
+      <span>Kamp Kape MNL</span>
+    </a>
+
+    <nav id="main-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+
+    <h1>Our Menu</h1>
+
+    <!-- search box -->
+    <section id="menu-search">
+      <label for="search-input">Search the menu</label>
+      <input type="search" id="search-input" placeholder="e.g. latte">
+    </section>
+
+    <!-- Category tabs -->
+    <nav id="category-tabs" aria-label="Menu categories"></nav>
+
+    <!-- Menu list -->
+    <section id="menu-list" aria-live="polite"></section>
+
+    <!-- msg that results from no results -->
+    <p id="no-results" hidden>No items match your search. Try another word or category.</p>
+
+    <!-- Menu template -->
+    <template id="menu-item-template">
+      <article class="menu-item">
+        <img class="item-image" src="images/placeholder.png" alt="">
+        <h2 class="item-name"></h2>
+        <p class="item-description"></p>
+        <p class="item-price"></p>
+      </article>
+    </template>
+
+  </main>
+
+  <footer id="site-footer">
+    <div class="social-links">
+      <a class="social-link"
+         href="https://www.facebook.com/profile.php?id=61588650507047&amp;rdid=HTBzzrMCjtMF3vto&amp;share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1E39WEsbmB%2F#"
+         target="_blank"
+         rel="noopener noreferrer">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+        </svg>
+        <span>Kamp Kape MNL on Facebook</span>
+      </a>
+    </div>
+
+    <p>&copy; 2026 Kamp Kape MNL. All rights reserved.</p>
+  </footer>
+
+</body>
+
+</html>
