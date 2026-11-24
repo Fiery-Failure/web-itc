@@ -81,7 +81,7 @@ const MENU = [
 /* ---------- 1b. WHERE ORDERS GET SENT ----------
    PLACEHOLDER: check these before launch. */
 const CAFE_NAME = "Kamp Kape MNL";                    // used in the greeting of the order message
-const PHONE = "+6309696031748";                        // used by the "Send by text" button
+const PHONE = "+639696031748";                        // used by the "Send by text" button
 const MESSENGER_LINK = "https://m.me/61588650507047"; // the cafe's Facebook page chat
 
 /* ---------- 2. THINGS THAT CHANGE ---------- */
