@@ -92,11 +92,12 @@ img {
   }
 
  #main-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
+    position: static;
+    order: 3;
+    width: 100%;
+    transform: none;
+  }
+  
   #main-nav ul {
     justify-content: center;
   }
