@@ -226,6 +226,7 @@ function copyOrder() {
   copyStatus.textContent = "Copied!";
 }
 
+// Slider Fucntion
 document.addEventListener("DOMContentLoaded", () => {
   initHeroSlider();
 });
