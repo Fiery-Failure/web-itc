@@ -244,7 +244,7 @@ function initHeroSlider() {
   if (!track || slides.length === 0) return;
 
   let currentIndex = 0;
-  const SLIDE_INTERVAL_MS = 4000; // 4 seconds
+  const SLIDE_INTERVAL_MS = 5000; // 5 seconds
   let autoSlideTimer = null;
 
   function goToSlide(index) {
