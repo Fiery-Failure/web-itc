@@ -429,7 +429,7 @@ h2 {
   font-size: 0.85rem;
 }
 
-.item-hot-cold .add-button[hidden] {
+.menu-item .add-button[hidden] {
   display: none;
 }
 
