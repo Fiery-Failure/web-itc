@@ -124,7 +124,7 @@ h2 {
 .hero-slider {
   position: relative;
   width: 100%;
-  max-width: 480px; /* Keeps vertical flyers balanced on desktop without extra side bars */
+  max-width: 480px; 
   margin: 0 auto 1.5rem auto;
   overflow: hidden;
   border-radius: var(--radius);
