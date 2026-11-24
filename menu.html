@@ -54,37 +54,8 @@
   <main>
 
     <h1>Our Menu</h1>
-
-    <!-- search box -->
-    <section id="menu-search">
-      <!-- A label connected to the input by matching "for" and "id" (helps screen readers) -->
-      <label for="search-input">Search the menu</label>
-      <input type="search" id="search-input" placeholder="e.g. latte">
-    </section>
-
-
-    <!-- Category tabs -->
-    <nav id="category-tabs" aria-label="Menu categories"></nav>
-
-
-    <!-- Menu list -->
-    <section id="menu-list" aria-live="polite"></section>
-
-
-    <!-- msg that results from no results -->
-    <p id="no-results" hidden>No items match your search. Try another word or category.</p>
-
-
-    <!-- Menu template -->
-    <template id="menu-item-template">
-      <article class="menu-item">
-        <img class="item-image" src="images/placeholder.png" alt="">
-        <h2 class="item-name"></h2>
-        <p class="item-description"></p>
-        <p class="item-price"></p>
-        <button class="add-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg> Add to cart</button>
-      </article>
-    </template>
+    <p>Choose a category to see the food and drinks available.</p>
+    <nav id="category-list" aria-label="Menu categories"></nav>
 
   <dialog id="cart-popup">
   <h2>Your order</h2>
