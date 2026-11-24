@@ -124,16 +124,17 @@ h2 {
 .hero-slider {
   position: relative;
   width: 100%;
+  max-width: 480px; /* Keeps vertical flyers balanced on desktop without extra side bars */
+  margin: 0 auto 1.5rem auto;
   overflow: hidden;
   border-radius: var(--radius);
-  margin-bottom: 1.5rem;
-  background-color: var(--espresso);
-  border: 1px solid var(--border-latte);
+  background-color: transparent;
   touch-action: pan-y;
 }
 
 .slider-track {
   display: flex;
+  align-items: center;
   transition: transform 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -142,14 +143,15 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--espresso);
+  background-color: transparent;
 }
 
 .slide img {
   width: 100%;
-  height: 440px;
-  object-fit: contain;
-  border-radius: 0;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border-radius: var(--radius);
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -179,16 +181,16 @@ h2 {
 }
 
 .slider-btn.prev {
-  left: 14px;
+  left: 12px;
 }
 
 .slider-btn.next {
-  right: 14px;
+  right: 12px;
 }
 
 .slider-dots {
   position: absolute;
-  bottom: 14px;
+  bottom: 12px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
