@@ -219,30 +219,63 @@ h2 {
   border-color: transparent;
 }
 
-#category-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+#category-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
 }
 
-#category-tabs button,
-#category-tabs a {
-  padding: 0.5rem 1.1rem;
+#category-list .category-card {
+  position: relative;
+  display: block;
+  min-height: 190px;
+  height: clamp(190px, 22vw, 240px);
+  min-height: 0;
+  overflow: hidden;
   border: 1px solid var(--border-latte);
-  background-color: #FFFFFF;
-  color: var(--chestnut);
-  border-radius: 999px;
-  cursor: pointer;
+  border-radius: var(--radius);
+  background-color: var(--bg-card);
+  box-shadow: 0 3px 10px rgba(44, 30, 22, 0.08);
+  color: #FFFFFF;
   font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s;
 }
 
-#category-tabs button:hover,
-#category-tabs button.active {
-  background-color: var(--espresso);
-  color: #FAF6F0;
-  border-color: var(--espresso);
+#category-list .category-card::after {
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(transparent, rgba(44, 30, 22, 0.82));
+  content: "";
+}
+
+#category-list .category-card img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+#category-list .category-card span {
+  position: absolute;
+  z-index: 1;
+  right: 1rem;
+  bottom: 0.85rem;
+  left: 1rem;
+  font-size: 1.2rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+}
+
+.back-to-categories {
+  width: fit-content;
+  color: var(--caramel-hover);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.back-to-categories:hover {
+  text-decoration: underline;
 }
 
 #menu-list {
@@ -464,6 +497,8 @@ h2 {
 
 /* Visible keyboard focus on the new buttons */
 #open-cart:focus-visible,
+#category-list a:focus-visible,
+.back-to-categories:focus-visible,
 .add-button:focus-visible,
 #checkout-button:focus-visible,
 #close-cart:focus-visible,
