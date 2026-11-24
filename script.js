@@ -1,7 +1,7 @@
 /* =====================================================================
-   script.js : makes the MENU PAGE work (menu cards, category tabs, search).
-   Both index.html and menu.html load this file, but it only does anything
-   on menu.html (the home page has no menu elements, so it's skipped).
+   script.js : makes the menu and category pages work.
+   Both index.html and the menu pages load this file, but it only does
+   anything when menu elements are present.
    ===================================================================== */
 
 /* ---------- 1. MENU DATA ----------
@@ -9,7 +9,7 @@
      name, category, price (number), desc (description),
      alt (describes the photo for screen readers),
      img (OPTIONAL: path to the item's photo, e.g. "images/latte.jpg").
-   Items without img use the placeholder picture from menu.html. */
+   Items without img use the placeholder picture from category.html. */
 const MENU = [
   { name: "PLACEHOLDER NAME1", category: "PLACEHOLDER CATEGORY1", price: 100, desc: "PLACEHOLDERDESC1", alt: "PLACEHOLDERALT1" },
   { name: "PLACEHOLDER NAME2", category: "PLACEHOLDER CATEGORY2", price: 100, desc: "PLACEHOLDERDESC2", alt: "PLACEHOLDERALT2" },
@@ -25,17 +25,18 @@ const PHONE = "+6309696031748";                        // used by the "Send by t
 const MESSENGER_LINK = "https://m.me/61588650507047"; // the cafe's Facebook page chat
 
 /* ---------- 2. THINGS THAT CHANGE ---------- */
-let category = "All";   // which tab is selected
+let category = new URLSearchParams(window.location.search).get("category") || "";
 let search = "";        // what is typed in the search box
-let cart = {};          // e.g. { "PLACEHOLDER NAME1": 2 }
+let cart = JSON.parse(sessionStorage.getItem("kamp-kape-cart") || "{}");
 
-/* ---------- 3. FIND THE ELEMENTS IN menu.html ----------
+/* ---------- 3. FIND THE ELEMENTS IN THE MENU PAGES ----------
    On index.html these are all null, which is how we know to do nothing. */
 const menuList    = document.getElementById("menu-list");
-const tabs        = document.getElementById("category-tabs");
+const categoryList = document.getElementById("category-list");
 const searchInput = document.getElementById("search-input");
 const noResults   = document.getElementById("no-results");
 const template    = document.getElementById("menu-item-template");
+const categoryTitle = document.getElementById("category-title");
 const cartLines      = document.getElementById("cart-lines");
 const cartCount      = document.getElementById("cart-count");
 const cartTotal      = document.getElementById("cart-total");
@@ -47,34 +48,37 @@ const copyStatus     = document.getElementById("copy-status");
 const smsLink        = document.getElementById("sms-link");
 const messengerLink  = document.getElementById("messenger-link");
 
-/* ---------- 4. DRAW THE CATEGORY TABS ----------
-   One button per category in MENU, plus "All". */
-function showTabs() {
-  tabs.innerHTML = "";
-  const names = ["All", ...new Set(MENU.map((item) => item.category))];
+/* ---------- 4. DRAW THE CATEGORY LINKS ---------- */
+function showCategories() {
+  categoryList.innerHTML = "";
+  const names = [...new Set(MENU.map((item) => item.category))];
 
   for (const name of names) {
-    const button = document.createElement("button");
-    button.textContent = name;
-    if (name === category) button.classList.add("active");   // highlights the selected tab
-    button.onclick = () => {
-      category = name;
-      showTabs();    // redraw so the highlight moves
-      showMenu();    // redraw the cards for the new category
-    };
-    tabs.appendChild(button);
+    const link = document.createElement("a");
+    const categoryItem = MENU.find((item) => item.category === name);
+    const image = document.createElement("img");
+    const label = document.createElement("span");
+
+    link.href = "category.html?category=" + encodeURIComponent(name);
+    link.className = "category-card";
+    image.src = categoryItem.img || "images/category-placeholder.svg";
+    image.alt = "";
+    label.textContent = name;
+    link.append(image, label);
+    categoryList.appendChild(link);
   }
 }
 
 /* ---------- 5. DRAW THE MENU CARDS ----------
-   For each item that matches the tab AND the search text, copy the
-   <template> from menu.html, fill it in, and add it to the page. */
+   For each item that matches the selected category and search text, copy the
+   <template> from category.html, fill it in, and add it to the page. */
 function showMenu() {
   menuList.innerHTML = "";
   let shown = 0;
+  categoryTitle.textContent = category || "Food category";
 
   for (const item of MENU) {
-    const inCategory = category === "All" || item.category === category;
+    const inCategory = item.category === category;
     const matches = (item.name + " " + item.desc).toLowerCase().includes(search.toLowerCase());
     if (!inCategory || !matches) continue;     // skip items that don't match
 
@@ -95,12 +99,17 @@ function showMenu() {
   noResults.hidden = shown > 0;   // show the "No items match" message only when nothing matched
 }
 
-/* ---------- 6. START (menu page only) ---------- */
-if (menuList) {
-  searchInput.addEventListener("input", () => {
-    search = searchInput.value.trim();
-    showMenu();
-  });
+/* ---------- 6. START (menu pages only) ---------- */
+if (categoryList || menuList) {
+  if (categoryList) showCategories();
+
+  if (menuList) {
+    searchInput.addEventListener("input", () => {
+      search = searchInput.value.trim();
+      showMenu();
+    });
+  }
+
   document.getElementById("open-cart").onclick = () => cartPopup.showModal();
   document.getElementById("close-cart").onclick = () => cartPopup.close();
   // "Place order": write the order into the message box, then swap popups
@@ -125,17 +134,19 @@ if (menuList) {
   };
   document.getElementById("done-order").onclick = () => {
     cart = {};
+    sessionStorage.setItem("kamp-kape-cart", JSON.stringify(cart));
     showCart();
     orderPopup.close();
   };
-  showTabs();
-  showMenu();
+
+  if (menuList) showMenu();
   showCart();
 }
 
 function changeQty(name, amount) {
   cart[name] = (cart[name] || 0) + amount;
   if (cart[name] <= 0) delete cart[name];   // remove the row at zero
+  sessionStorage.setItem("kamp-kape-cart", JSON.stringify(cart));
   showCart();
 }
 
@@ -143,8 +154,7 @@ function showCart() {
   let count = 0, total = 0;
   cartLines.innerHTML = "";
 
-  // The fallback picture is whatever the template in menu.html uses (images/placeholder.png)
-  const defaultImage = template.content.querySelector(".item-image").getAttribute("src");
+  const defaultImage = "images/placeholder.png";
 
   for (const item of MENU) {
     const qty = cart[item.name];
