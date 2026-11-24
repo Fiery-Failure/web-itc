@@ -459,9 +459,7 @@ h2 {
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 4rem;
-  width: 100%;
-  max-width: 820px;
+  gap: 1.5rem; /* was 0.75rem */
 }
 
 .social-link {
