@@ -91,12 +91,11 @@ img {
     flex-wrap: wrap;
   }
 
-  #main-nav {
-    position: static;
-    order: 3;
-    width: 100%;
-    transform: none;
-  }
+ #main-nav {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
 
   #main-nav ul {
     justify-content: center;
