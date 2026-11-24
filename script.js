@@ -139,7 +139,7 @@ function showMenu() {
 
   for (const item of MENU) {
     const inCategory = item.category === category;
-    const matches = (item.name + " " + item.desc).toLowerCase().includes(search.toLowerCase());
+    const matches = (item.name + " " + (item.desc || "")).toLowerCase().includes(search.toLowerCase());
     if (!inCategory || !matches) continue;     // skip items that don't match
 
     const card = template.content.cloneNode(true);   // a fresh copy of the template
