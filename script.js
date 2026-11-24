@@ -225,3 +225,89 @@ function copyOrder() {
   else document.execCommand("copy");
   copyStatus.textContent = "Copied!";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  initHeroSlider();
+});
+
+function initHeroSlider() {
+  const slider = document.querySelector(".hero-slider");
+  if (!slider) return;
+
+  const track = slider.querySelector(".slider-track");
+  const slides = Array.from(slider.querySelectorAll(".slide"));
+  const prevBtn = slider.querySelector(".slider-btn.prev");
+  const nextBtn = slider.querySelector(".slider-btn.next");
+  const dots = Array.from(slider.querySelectorAll(".dot"));
+
+  if (!track || slides.length === 0) return;
+
+  let currentIndex = 0;
+  const SLIDE_INTERVAL_MS = 4000; // 4 seconds
+  let autoSlideTimer = null;
+
+  function goToSlide(index) {
+    currentIndex = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+a
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentIndex);
+    });
+  }
+
+  function startAutoSlide() {
+    stopAutoSlide();
+    autoSlideTimer = setInterval(() => {
+      goToSlide(currentIndex + 1);
+    }, SLIDE_INTERVAL_MS);
+  }
+
+  function stopAutoSlide() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => {
+      goToSlide(currentIndex - 1);
+      startAutoSlide();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => {
+      goToSlide(currentIndex + 1);
+      startAutoSlide();
+    });
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      goToSlide(index);
+      startAutoSlide();
+    });
+  });
+
+  slider.addEventListener("mouseenter", stopAutoSlide);
+  slider.addEventListener("mouseleave", startAutoSlide);
+
+  let touchStartX = 0;
+  slider.addEventListener("touchstart", (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoSlide();
+  }, { passive: true });
+
+  slider.addEventListener("touchend", (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    const swipeDistance = touchEndX - touchStartX;
+    if (Math.abs(swipeDistance) > 40) {
+      goToSlide(swipeDistance < 0 ? currentIndex + 1 : currentIndex - 1);
+    }
+    startAutoSlide();
+  }, { passive: true });
+
+  goToSlide(0);
+  startAutoSlide();
+}
