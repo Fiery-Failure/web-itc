@@ -43,12 +43,6 @@ img {
   z-index: 10;
 }
 
-#main-nav {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 #logo {
   display: flex;
   align-items: center;
@@ -84,23 +78,6 @@ img {
 #main-nav a:hover {
   background-color: var(--border-latte);
   color: var(--espresso);
-}
-
-@media (max-width: 700px) {
-  #site-header {
-    flex-wrap: wrap;
-  }
-
- #main-nav {
-    position: static;
-    order: 3;
-    width: 100%;
-    transform: none;
-  }
-  
-  #main-nav ul {
-    justify-content: center;
-  }
 }
 
 /* === 4. MAIN LAYOUT CONTAINERS === */
@@ -144,24 +121,19 @@ h2 {
   background-color: var(--bg-card);
 }
 
-#hero h1 {
-  margin-bottom: 1.25rem;
-}
-
 .hero-slider {
   position: relative;
   width: 100%;
-  max-width: 480px;
-  margin: 0 auto 1.5rem auto;
   overflow: hidden;
   border-radius: var(--radius);
-  background-color: transparent;
+  margin-bottom: 1.5rem;
+  background-color: var(--espresso);
+  border: 1px solid var(--border-latte);
   touch-action: pan-y;
 }
 
 .slider-track {
   display: flex;
-  align-items: center;
   transition: transform 0.55s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -170,15 +142,14 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: transparent;
+  background-color: var(--espresso);
 }
 
 .slide img {
   width: 100%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-  border-radius: var(--radius);
+  height: 440px;
+  object-fit: contain;
+  border-radius: 0;
   user-select: none;
   -webkit-user-drag: none;
 }
@@ -208,16 +179,16 @@ h2 {
 }
 
 .slider-btn.prev {
-  left: 12px;
+  left: 14px;
 }
 
 .slider-btn.next {
-  right: 12px;
+  right: 14px;
 }
 
 .slider-dots {
   position: absolute;
-  bottom: 12px;
+  bottom: 14px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -442,6 +413,26 @@ h2 {
   margin-top: 0.4rem;
 }
 
+.item-hot-cold {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.item-hot-cold[hidden] {
+  display: none;
+}
+
+.item-hot-cold .add-button {
+  flex: 1;
+  padding: 0.6rem 0.5rem;
+  font-size: 0.85rem;
+}
+
+.item-hot-cold .add-button[hidden] {
+  display: none;
+}
+
 /* === 8. FOOTER & SOCIAL BAR === */
 #site-footer {
   text-align: center;
@@ -459,7 +450,8 @@ h2 {
 .social-links {
   display: flex;
   justify-content: center;
-  gap: 1.5rem; /* was 0.75rem */
+  width: 100%;
+  max-width: 520px;
 }
 
 .social-link {
@@ -467,8 +459,7 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  flex: 1;
-  width: auto;
+  width: 100%;
   padding: 0.7rem 1.4rem;
   background-color: #3D2B20;
   color: var(--bg-main);
@@ -478,12 +469,6 @@ h2 {
   font-weight: 600;
   font-size: 0.95rem;
   transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
-}
-
-@media (max-width: 700px) {
-  .social-links {
-    flex-direction: column;
-  }
 }
 
 .social-link:hover {
