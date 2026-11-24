@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kamp Kape MNL | Menu Category</title>
+  <meta name="description" content="Browse food and drinks by menu category at Kamp Kape MNL.">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  </svg>
+
+  <header id="site-header">
+    <a href="index.html" id="logo">
+      <img src="https://scontent.fmnl17-5.fna.fbcdn.net/v/t39.30808-6/640114021_122094841971288350_2284737999150468777_n.jpg?stp=dst-jpg_tt6&amp;cstp=mx2000x2000&amp;ctp=s2000x2000&amp;_nc_cat=107&amp;_nc_map=urlgen_bucketless&amp;ccb=1-7&amp;_nc_sid=6ee11a&amp;_nc_eui2=AeGNLHO1jwr1we4lg1iIo52_di0075TkURB2LTTvlORREOe4Qle4yDIjGZel0OZofsEOoiTboHbAn5RkEdRspNF6&amp;_nc_ohc=LRAyBTvbKVcQ7kNvwENy0ET&amp;_nc_oc=Adp23PDcijnLNaODMb79QVyTWgglpaekXdaxc2fYryzzlRsPLAAPwTf8OgvJs5EnxyQ&amp;_nc_zt=23&amp;_nc_ht=scontent.fmnl17-5.fna&amp;_nc_gid=dOTGK9VfHka47zWiitBhiw&amp;_nc_ss=7b2a8&amp;oh=00_AQT4YB3ZANghqmPPOdtCKN1YpKKQVHfMQNSeaRfS6-JGzw&amp;oe=6B0845F8"
+           alt="Kamp Kape MNL logo" width="50" height="50">
+      <span>Kamp Kape MNL</span>
+    </a>
+    <nav id="main-nav" aria-label="Main navigation">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="menu.html">Menu</a></li>
+      </ul>
+    </nav>
+    <button id="open-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg> Cart (<span id="cart-count">0</span>)</button>
+  </header>
+
+  <main>
+    <a href="menu.html" class="back-to-categories">← All categories</a>
+    <h1 id="category-title">Food category</h1>
+    <section id="menu-search">
+      <label for="search-input">Search this category</label>
+      <input type="search" id="search-input" placeholder="e.g. latte">
+    </section>
+    <section id="menu-list" aria-live="polite"></section>
+    <p id="no-results" hidden>No items match your search in this category.</p>
+
+    <template id="menu-item-template">
+      <article class="menu-item">
+        <img class="item-image" src="images/placeholder.png" alt="">
+        <h2 class="item-name"></h2>
+        <p class="item-description"></p>
+        <p class="item-price"></p>
+        <button class="add-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg> Add to cart</button>
+      </article>
+    </template>
+
+    <dialog id="cart-popup">
+      <h2>Your order</h2>
+      <div id="cart-lines"></div>
+      <p>Total: <strong id="cart-total">₱0</strong></p>
+      <button id="checkout-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg> Place order</button>
+      <button id="close-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg> Close</button>
+    </dialog>
+
+    <dialog id="order-popup">
+      <h2>Send your order</h2>
+      <p>Fill in your details below, then send the message to the cafe.</p>
+      <label for="order-text">Your order message (you can edit it)</label>
+      <textarea id="order-text" rows="14"></textarea>
+      <div id="order-actions">
+        <button id="copy-order" class="order-btn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg> Copy message</button>
+        <a id="sms-link" class="order-btn" href="#"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg> Send by text</a>
+        <a id="messenger-link" class="order-btn" href="#" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg> Open Messenger</a>
+      </div>
+      <p id="copy-status" aria-live="polite"></p>
+      <div id="order-footer">
+        <button id="back-to-cart" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg> Back to cart</button>
+        <button id="done-order" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Done (clear cart)</button>
+      </div>
+    </dialog>
+  </main>
+
+  <footer id="site-footer">
+    <p>&copy; 2026 Kamp Kape MNL. All rights reserved.</p>
+  </footer>
+</body>
+
+</html>
