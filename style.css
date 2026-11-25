@@ -413,6 +413,20 @@ h2 {
 }
 
 #category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#category-list .category-group {
+  width: 100%;
+}
+
+#category-list .category-group h2 {
+  margin-bottom: 1.25rem;
+}
+
+#category-list .category-group-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
