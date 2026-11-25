@@ -60,7 +60,7 @@
   <dialog id="cart-popup">
   <h2>Your order</h2>
   <div id="cart-lines"></div>
-  <p>Total: <strong id="cart-total">₱0</strong></p>
+  <p>Total: <strong id="cart-total">₱0.00</strong></p>
   <button id="checkout-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg> Place order</button>
   <button id="close-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg> Close</button>
   </dialog>
@@ -83,9 +83,14 @@
 
     <div id="order-footer">
       <button id="back-to-cart" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg> Back to cart</button>
+      <button id="cancel-order" class="order-btn secondary" type="button">Cancel order</button>
       <button id="done-order" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Done (clear cart)</button>
     </div>
   </dialog>
+
+  <div id="status-popup" role="status" aria-live="polite" aria-atomic="true" hidden>
+    <p id="status-message"></p>
+  </div>
   </main>
 
 
