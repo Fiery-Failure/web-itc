@@ -391,6 +391,28 @@ h2 {
   box-shadow: 0 3px 10px rgba(44, 30, 22, 0.04);
 }
 
+.menu-item .item-details-button {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-item .item-details-button:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
 .menu-item .item-image {
   width: 100%;
   height: 160px;
@@ -406,17 +428,16 @@ h2 {
   padding: 0;
 }
 
-.menu-item .item-description {
-  font-size: 0.9rem;
-  color: var(--chestnut);
-  flex-grow: 1;
-}
-
 .menu-item .item-price {
   font-weight: 700;
   color: var(--caramel);
   font-size: 1.05rem;
   margin-top: 0.4rem;
+}
+
+.item-details-hint {
+  color: var(--chestnut);
+  font-size: 0.85rem;
 }
 
 .item-hot-cold {
@@ -492,9 +513,10 @@ h2 {
 
 /* === 9. CART (MENU PAGE) === */
 
-/* Main caramel buttons: header Cart button, card "Add to cart", popup "Place order" */
+/* Main caramel buttons: header cart, item popup add, and order checkout */
 #open-cart,
 .menu-item .add-button,
+#menu-item-popup .add-button,
 #checkout-button {
   background-color: var(--caramel);
   color: #FFFFFF;
@@ -518,8 +540,13 @@ h2 {
 
 #open-cart:hover,
 .menu-item .add-button:hover,
+#menu-item-popup .add-button:hover,
 #checkout-button:hover:not(:disabled) {
   background-color: var(--caramel-hover);
+}
+
+#menu-item-popup .add-button[hidden] {
+  display: none;
 }
 
 #checkout-button:disabled {
@@ -528,6 +555,7 @@ h2 {
 }
 
 /* The popup itself */
+#menu-item-popup,
 #cart-popup,
 #order-popup {
   margin: auto;              /* the reset in section 2 removes the browser's centering; this puts it back */
@@ -542,13 +570,96 @@ h2 {
   box-shadow: 0 12px 40px rgba(44, 30, 22, 0.25);
 }
 
+#status-popup {
+  position: fixed;
+  z-index: 1000;
+  top: 1rem;
+  left: 50%;
+  width: min(420px, calc(100% - 2rem));
+  margin: 0;
+  padding: 1rem 1.5rem;
+  background-color: #FFFFFF;
+  color: var(--espresso);
+  border: 1px solid var(--border-latte);
+  border-radius: var(--radius);
+  box-shadow: 0 12px 40px rgba(44, 30, 22, 0.25);
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -0.75rem);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+#status-popup[hidden] {
+  display: none;
+}
+
+#status-popup.is-visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+#status-popup p {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #status-popup {
+    transition: none;
+  }
+}
+
 /* The dimmed page behind the popup */
+#menu-item-popup::backdrop,
 #cart-popup::backdrop,
 #order-popup::backdrop {
   background-color: rgba(44, 30, 22, 0.55);
 }
 
+#menu-item-popup .popup-item-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  margin-bottom: 1rem;
+  background-color: var(--bg-card);
+}
+
+#menu-item-popup .popup-item-name {
+  margin-bottom: 0.75rem;
+}
+
+#menu-item-popup .popup-item-description {
+  color: var(--chestnut);
+}
+
+#menu-item-popup .popup-item-price {
+  color: var(--caramel);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+#menu-item-popup .item-hot-cold {
+  margin: 0.75rem 0;
+}
+
+#close-menu-item-popup {
+  background-color: #FFFFFF;
+  color: var(--chestnut);
+  border: 1px solid var(--border-latte);
+  border-radius: 8px;
+  padding: 0.6rem 1.2rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+#close-menu-item-popup:hover {
+  background-color: var(--bg-card);
+}
+
 #cart-popup p,
+#menu-item-popup p,
 #order-popup p {
   margin: 1rem 0;            /* space around the "Total" line */
 }
@@ -564,6 +675,8 @@ h2 {
 
 .cart-row span {
   flex: 1;                   /* pushes the - and + buttons to the right edge */
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 /* Small product photo at the start of each cart row */
@@ -590,6 +703,24 @@ h2 {
   background-color: var(--border-latte);
 }
 
+.cart-row input[type="number"] {
+  width: 3.75rem;
+  min-width: 3.25rem;
+  height: 32px;
+  padding: 0.25rem;
+  border: 1px solid var(--border-latte);
+  border-radius: 6px;
+  background-color: #FFFFFF;
+  color: var(--espresso);
+  font: inherit;
+  text-align: center;
+}
+
+.cart-row input[type="number"]:focus-visible {
+  outline: 2px solid var(--caramel);
+  outline-offset: 2px;
+}
+
 /* "Close" button: quieter than "Place order" */
 #close-cart {
   background-color: #FFFFFF;
@@ -612,9 +743,11 @@ h2 {
 #category-list a:focus-visible,
 .back-to-categories:focus-visible,
 .add-button:focus-visible,
+#close-menu-item-popup:focus-visible,
 #checkout-button:focus-visible,
 #close-cart:focus-visible,
-.cart-row button:focus-visible {
+.cart-row button:focus-visible,
+.cart-row input[type="number"]:focus-visible {
   outline: 2px solid var(--caramel);
   outline-offset: 2px;
 }
@@ -723,7 +856,9 @@ h2 {
 /* Put each icon and its label on one row, centered */
 #open-cart,
 .menu-item .add-button,
+#menu-item-popup .add-button,
 #checkout-button,
+#close-menu-item-popup,
 #close-cart,
 .order-btn {
   display: inline-flex;
