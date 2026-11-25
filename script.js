@@ -117,8 +117,15 @@ const messengerLink  = document.getElementById("messenger-link");
 function showCategories() {
   categoryList.innerHTML = "";
   const names = [...new Set(MENU.map((item) => item.category))];
+  const groups = [
+    { name: "Beverages", categories: ["Coffee", "Non-Coffee", "Frappes"] },
+    { name: "Meals", categories: ["Pastas", "Rice Meals"] },
+    { name: "Pastries", categories: ["Waffles", "Sandwiches"] },
+    { name: "Miscellaneous", categories: ["Snacks", "Wings"] },
+  ];
+  const groupedNames = new Set(groups.flatMap((group) => group.categories));
 
-  for (const name of names) {
+  function createCategoryCard(name) {
     const link = document.createElement("a");
     const categoryItem = MENU.find((item) => item.category === name);
     const image = document.createElement("img");
@@ -130,7 +137,43 @@ function showCategories() {
     image.alt = "";
     label.textContent = name;
     link.append(image, label);
-    categoryList.appendChild(link);
+    return link;
+  }
+
+  for (const group of groups) {
+    const categories = group.categories.filter((name) => names.includes(name));
+    if (categories.length === 0) continue;
+
+    const section = document.createElement("section");
+    const heading = document.createElement("h2");
+    const categoryCards = document.createElement("div");
+    section.className = "category-group";
+    heading.textContent = group.name;
+    categoryCards.className = "category-group-cards";
+
+    for (const name of categories) {
+      categoryCards.appendChild(createCategoryCard(name));
+    }
+
+    section.append(heading, categoryCards);
+    categoryList.appendChild(section);
+  }
+
+  const ungroupedNames = names.filter((name) => !groupedNames.has(name));
+  if (ungroupedNames.length > 0) {
+    const section = document.createElement("section");
+    const heading = document.createElement("h2");
+    const categoryCards = document.createElement("div");
+    section.className = "category-group";
+    heading.textContent = "Other";
+    categoryCards.className = "category-group-cards";
+
+    for (const name of ungroupedNames) {
+      categoryCards.appendChild(createCategoryCard(name));
+    }
+
+    section.append(heading, categoryCards);
+    categoryList.appendChild(section);
   }
 }
 
