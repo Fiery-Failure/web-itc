@@ -8,10 +8,10 @@
   <title>Kamp Kape MNL | Menu</title>
   <meta name="description" content="Browse the Kamp Kape MNL menu: coffee, non-coffee drinks, and pastries.">
 
-  <!-- STYLES: uncomment once style.css exists -->
-  <link rel="stylesheet" href="style.css"> 
+  <!-- STYLES -->
+  <link rel="stylesheet" href="style.css">
 
-  <!-- SCRIPTS: uncomment once script.js exists. Required for the menu to display -->
+  <!-- SCRIPTS: Required for the menu to display -->
   <script src="script.js" defer></script>
 </head>
 
@@ -47,52 +47,52 @@
     </nav>
 
     <!-- Cart button: opens the cart popup. The number is updated by script.js -->
-    <button id="open-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg> Cart (<span id="cart-count">0</span>)</button>
+    <button id="open-cart" type="button" aria-label="Open cart">
+      <svg class="icon" aria-hidden="true"><use href="#i-cart"></use></svg>
+      Cart (<span id="cart-count">0</span>)
+    </button>
   </header>
 
-
   <main>
-
     <h1>Our Menu</h1>
     <p>Choose a category to see the food and drinks available.</p>
     <nav id="category-list" aria-label="Menu categories"></nav>
 
-  <dialog id="cart-popup">
-  <h2>Your order</h2>
-  <div id="cart-lines"></div>
-  <p>Total: <strong id="cart-total">₱0.00</strong></p>
-  <button id="checkout-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg> Place order</button>
-  <button id="close-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg> Close</button>
-  </dialog>
+    <dialog id="cart-popup">
+      <h2>Your order</h2>
+      <div id="cart-lines"></div>
+      <p>Total: <strong id="cart-total">₱0.00</strong></p>
+      <button id="checkout-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg> Place order</button>
+      <button id="close-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg> Close</button>
+    </dialog>
 
-  <!-- ORDER MESSAGE POPUP: opens when "Place order" is pressed.
-       script.js fills the textarea with the order; the customer can edit it before sending. -->
-  <dialog id="order-popup">
-    <h2>Send your order</h2>
-    <p>Fill in your details below, then send the message to the cafe.</p>
+    <!-- ORDER MESSAGE POPUP: opens when "Place order" is pressed.
+         script.js fills the textarea with the order; the customer can edit it before sending. -->
+    <dialog id="order-popup">
+      <h2>Send your order</h2>
+      <p>Fill in your details below, then send the message to the cafe.</p>
 
-    <label for="order-text">Your order message (you can edit it)</label>
-    <textarea id="order-text" rows="14"></textarea>
+      <label for="order-text">Your order message (you can edit it)</label>
+      <textarea id="order-text" rows="14"></textarea>
 
-    <div id="order-actions">
-      <button id="copy-order" class="order-btn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg> Copy message</button>
-      <a id="sms-link" class="order-btn" href="#"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg> Send by text</a>
-      <a id="messenger-link" class="order-btn" href="#" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg> Open Messenger</a>
+      <div id="order-actions">
+        <button id="copy-order" class="order-btn" type="button"><svg class="icon" aria-hidden="true"><use href="#i-copy"></use></svg> Copy message</button>
+        <a id="sms-link" class="order-btn" href="#"><svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg> Send by text</a>
+        <a id="messenger-link" class="order-btn" href="#" target="_blank" rel="noopener noreferrer"><svg class="icon" aria-hidden="true"><use href="#i-chat"></use></svg> Open Messenger</a>
+      </div>
+      <p id="copy-status" aria-live="polite"></p>
+
+      <div id="order-footer">
+        <button id="back-to-cart" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg> Back to cart</button>
+        <button id="cancel-order" class="order-btn secondary" type="button">Cancel order</button>
+        <button id="done-order" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Done (clear cart)</button>
+      </div>
+    </dialog>
+
+    <div id="status-popup" role="status" aria-live="polite" aria-atomic="true" hidden>
+      <p id="status-message"></p>
     </div>
-    <p id="copy-status" aria-live="polite"></p>
-
-    <div id="order-footer">
-      <button id="back-to-cart" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg> Back to cart</button>
-      <button id="cancel-order" class="order-btn secondary" type="button">Cancel order</button>
-      <button id="done-order" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Done (clear cart)</button>
-    </div>
-  </dialog>
-
-  <div id="status-popup" role="status" aria-live="polite" aria-atomic="true" hidden>
-    <p id="status-message"></p>
-  </div>
   </main>
-
 
   <footer id="site-footer">
     <p>&copy; 2026 Kamp Kape MNL. All rights reserved.</p>
