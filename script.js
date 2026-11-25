@@ -88,6 +88,8 @@ const MESSENGER_LINK = "https://m.me/61588650507047"; // the cafe's Facebook pag
 let category = new URLSearchParams(window.location.search).get("category") || "";
 let search = "";        // what is typed in the search box
 let cart = JSON.parse(sessionStorage.getItem("kamp-kape-cart") || "{}");
+let statusTimeout = null;
+let statusHideTimeout = null;
 
 /* ---------- 3. FIND THE ELEMENTS IN THE MENU PAGES ----------
    On index.html these are all null, which is how we know to do nothing. */
@@ -97,6 +99,9 @@ const searchInput = document.getElementById("search-input");
 const noResults   = document.getElementById("no-results");
 const template    = document.getElementById("menu-item-template");
 const categoryTitle = document.getElementById("category-title");
+const menuItemPopup  = document.getElementById("menu-item-popup");
+const statusPopup    = document.getElementById("status-popup");
+const statusMessage  = document.getElementById("status-message");
 const cartLines      = document.getElementById("cart-lines");
 const cartCount      = document.getElementById("cart-count");
 const cartTotal      = document.getElementById("cart-total");
@@ -147,43 +152,87 @@ function showMenu() {
     if (item.img) image.src = item.img;              // otherwise the template's placeholder stays
     image.alt = item.alt;
     card.querySelector(".item-name").textContent = item.name;
-    card.querySelector(".item-description").textContent = item.desc;
-    const regularPrice = card.querySelector(".item-price");
-    const hotColdPrices = card.querySelector(".item-hot-cold");
-    const regularAddButton = card.querySelector(".menu-item > .add-button");
-    const hotButton = card.querySelector(".hot-button");
-    const coldButton = card.querySelector(".cold-button");
-    const hasHotPrice = item.pricehot != null;
-    const hasColdPrice = item.pricecold != null;
-
-    if (hasHotPrice || hasColdPrice) {
-      regularPrice.hidden = true;
-      regularAddButton.hidden = true;
-      hotColdPrices.hidden = false;
-
-      hotButton.hidden = !hasHotPrice;
-      coldButton.hidden = !hasColdPrice;
-
-      if (hasHotPrice) {
-        card.querySelector(".item-pricehot").textContent = "₱" + item.pricehot;
-        hotButton.onclick = () => changeQty(item.name + "|Hot", 1);
-      }
-
-      if (hasColdPrice) {
-        card.querySelector(".item-pricecold").textContent = "₱" + item.pricecold;
-        coldButton.onclick = () => changeQty(item.name + "|Cold", 1);
-      }
-    } else {
-      regularPrice.textContent = "₱" + item.price;
-      hotColdPrices.hidden = true;
-      regularAddButton.onclick = () => changeQty(item.name, 1);
-    }
+    card.querySelector(".item-price").textContent = getItemPriceLabel(item);
+    card.querySelector(".item-details-button").onclick = () => showMenuItem(item);
 
     menuList.appendChild(card);
     shown++;
   }
 
   noResults.hidden = shown > 0;   // show the "No items match" message only when nothing matched
+}
+
+function getItemPriceLabel(item) {
+  const prices = [item.price, item.pricehot, item.pricecold].filter((price) => price != null);
+  const lowest = Math.min(...prices);
+  const highest = Math.max(...prices);
+  return (lowest === highest ? "" : "From ") + "₱" + formatPrice(lowest);
+}
+
+function formatPrice(price) {
+  return Number(price).toFixed(2);
+}
+
+function showMenuItem(item) {
+  const image = menuItemPopup.querySelector(".popup-item-image");
+  image.src = item.img || "images/category-placeholder.svg";
+  image.alt = item.alt;
+  menuItemPopup.querySelector(".popup-item-name").textContent = item.name;
+  menuItemPopup.querySelector(".popup-item-description").textContent =
+    item.desc || "Description coming soon.";
+  menuItemPopup.querySelector(".popup-item-price").textContent = getItemPriceLabel(item);
+
+  const hotColdPrices = menuItemPopup.querySelector(".popup-item-hot-cold");
+  const hotButton = hotColdPrices.querySelector(".hot-button");
+  const coldButton = hotColdPrices.querySelector(".cold-button");
+  const regularAddButton = menuItemPopup.querySelector(".popup-add-button");
+  const hasHotPrice = item.pricehot != null;
+  const hasColdPrice = item.pricecold != null;
+
+  hotColdPrices.hidden = !hasHotPrice && !hasColdPrice;
+  regularAddButton.hidden = hasHotPrice || hasColdPrice;
+
+  hotButton.hidden = !hasHotPrice;
+  coldButton.hidden = !hasColdPrice;
+  if (hasHotPrice) {
+    hotButton.onclick = () => {
+      changeQty(item.name + "|Hot", 1);
+      menuItemPopup.close();
+      showStatus("Item successfully Added!");
+    };
+  }
+  if (hasColdPrice) {
+    hotColdPrices.querySelector(".item-pricecold").textContent = "₱" + formatPrice(item.pricecold);
+    coldButton.onclick = () => {
+      changeQty(item.name + "|Cold", 1);
+      menuItemPopup.close();
+      showStatus("Item successfully Added!");
+    };
+  }
+  if (hasHotPrice) {
+    hotColdPrices.querySelector(".item-pricehot").textContent = "₱" + formatPrice(item.pricehot);
+  }
+  regularAddButton.onclick = () => {
+    changeQty(item.name, 1);
+    menuItemPopup.close();
+    showStatus("Item successfully Added!");
+  };
+
+  menuItemPopup.showModal();
+}
+
+function showStatus(message) {
+  clearTimeout(statusTimeout);
+  clearTimeout(statusHideTimeout);
+  statusMessage.textContent = message;
+  statusPopup.hidden = false;
+  requestAnimationFrame(() => statusPopup.classList.add("is-visible"));
+  statusTimeout = setTimeout(() => {
+    statusPopup.classList.remove("is-visible");
+    statusHideTimeout = setTimeout(() => {
+      statusPopup.hidden = true;
+    }, 300);
+  }, 3000);
 }
 
 /* ---------- 6. START (menu pages only) ---------- */
@@ -195,6 +244,7 @@ if (categoryList || menuList) {
       search = searchInput.value.trim();
       showMenu();
     });
+    document.getElementById("close-menu-item-popup").onclick = () => menuItemPopup.close();
   }
 
   document.getElementById("open-cart").onclick = () => cartPopup.showModal();
@@ -224,6 +274,14 @@ if (categoryList || menuList) {
     sessionStorage.setItem("kamp-kape-cart", JSON.stringify(cart));
     showCart();
     orderPopup.close();
+    showStatus("Order confirmed!");
+  };
+  document.getElementById("cancel-order").onclick = () => {
+    cart = {};
+    sessionStorage.setItem("kamp-kape-cart", JSON.stringify(cart));
+    showCart();
+    orderPopup.close();
+    showStatus("Cancelled order");
   };
 
   if (menuList) showMenu();
@@ -233,6 +291,10 @@ if (categoryList || menuList) {
 function changeQty(name, amount) {
   cart[name] = (cart[name] || 0) + amount;
   if (cart[name] <= 0) delete cart[name];   // remove the row at zero
+  saveCart();
+}
+
+function saveCart() {
   sessionStorage.setItem("kamp-kape-cart", JSON.stringify(cart));
   showCart();
 }
@@ -278,25 +340,45 @@ function showCart() {
 
     const label = document.createElement("span");
     const variantLabel = variant ? " (" + variant + ")" : "";
-    label.textContent = item.name + variantLabel + " x " + qty + " = ₱" + (unitPrice * qty);
+    label.textContent = item.name + variantLabel + " x " + qty + " = ₱" + formatPrice(unitPrice * qty);
 
     const minus = document.createElement("button");
     minus.type = "button";
     minus.textContent = "−";
+    minus.setAttribute("aria-label", "Decrease quantity of " + item.name + variantLabel);
     minus.onclick = () => changeQty(cartKey, -1);
+
+    const quantity = document.createElement("input");
+    quantity.type = "number";
+    quantity.min = "1";
+    quantity.step = "1";
+    quantity.value = String(qty);
+    quantity.setAttribute("aria-label", "Quantity of " + item.name + variantLabel);
+    quantity.addEventListener("change", () => {
+      const newQty = Number(quantity.value);
+      if (!Number.isSafeInteger(newQty) || newQty < 1) {
+        quantity.value = String(cart[cartKey]);
+        showStatus("Enter a whole quantity of at least 1.");
+        return;
+      }
+
+      cart[cartKey] = newQty;
+      saveCart();
+    });
 
     const plus = document.createElement("button");
     plus.type = "button";
     plus.textContent = "+";
+    plus.setAttribute("aria-label", "Increase quantity of " + item.name + variantLabel);
     plus.onclick = () => changeQty(cartKey, 1);
 
-    row.append(picture, label, minus, plus);
+    row.append(picture, label, minus, quantity, plus);
     cartLines.appendChild(row);
   }
 
   if (count === 0) cartLines.textContent = "Your cart is empty.";
   cartCount.textContent = count;
-  cartTotal.textContent = "₱" + total;
+  cartTotal.textContent = "₱" + formatPrice(total);
   checkoutButton.disabled = count === 0;
 }
 
@@ -313,12 +395,12 @@ function buildOrderText() {
     const unitPrice = getCartItemPrice(item, variant);
     total += qty * unitPrice;
     const variantLabel = variant ? " (" + variant + ")" : "";
-    lines += "- " + item.name + variantLabel + " x " + qty + " = ₱" + (qty * unitPrice) + "\n";
+    lines += "- " + item.name + variantLabel + " x " + qty + " = ₱" + formatPrice(qty * unitPrice) + "\n";
   }
 
   return "Hello " + CAFE_NAME + " I’d like to place an order:\n\n" +
          lines +
-         "\nTotal: ₱" + total + "\n\n" +
+         "\nTotal: ₱" + formatPrice(total) + "\n\n" +
          "Name: \n" +
          "Pickup or delivery: \n" +
          "Pickup time / delivery address: \n" +
