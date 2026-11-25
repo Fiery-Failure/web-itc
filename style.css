@@ -313,8 +313,8 @@ h2 {
   width: 100%;
   max-width: 450px;
   border-collapse: collapse;
-  margin-bottom: 1.75rem;
-  text-align: left;
+  margin: 0 auto 1.75rem;
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
@@ -330,6 +330,11 @@ h2 {
 
 #hours th, #hours td {
   padding: 0.65rem 0.75rem;
+  border-bottom: 1px solid var(--border-latte);
+}
+
+#hours span:first-child {
+  padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border-latte);
 }
 
@@ -413,20 +418,6 @@ h2 {
 }
 
 #category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-#category-list .category-group {
-  width: 100%;
-}
-
-#category-list .category-group h2 {
-  margin-bottom: 1.25rem;
-}
-
-#category-list .category-group-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
