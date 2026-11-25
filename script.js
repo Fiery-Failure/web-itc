@@ -60,6 +60,7 @@ const MENU = [
   { name: "Clubhouse", category: "Sandwiches", price: 120, img:"images/clubhouse.png", desc: "A classic triple-decker with chicken, bacon, lettuce, tomato, egg and mayo on toasted bread.", alt: "Clubhouse" },
   { name: "Burger Sliders", category: "Sandwiches", price: 160, img:"images/burger-sliders.png", desc: "Three juicy mini beef burgers with cheese, lettuce, tomato, and our special sauce. Served with crispy fries.", alt: "Burger Sliders" },
 ];
+const BEVERAGE_CATEGORIES = new Set(["Coffee", "Frappes"]);
 
 /* ---------- 1b. WHERE ORDERS GET SENT ----------
    PLACEHOLDER: check these before launch. */
@@ -131,6 +132,7 @@ function showCategories() {
     const heading = document.createElement("h2");
     const categoryCards = document.createElement("div");
     section.className = "category-group";
+    if (group.name === "Beverages") section.classList.add("beverage-group");
     heading.textContent = group.name;
     categoryCards.className = "category-group-cards";
 
@@ -165,6 +167,7 @@ function showCategories() {
    <template> from category.html, fill it in, and add it to the page. */
 function showMenu() {
   menuList.innerHTML = "";
+  menuList.classList.toggle("beverages", BEVERAGE_CATEGORIES.has(category));
   let shown = 0;
   categoryTitle.textContent = category || "Food category";
 
@@ -200,6 +203,7 @@ function formatPrice(price) {
 }
 
 function showMenuItem(item) {
+  menuItemPopup.classList.toggle("beverages", BEVERAGE_CATEGORIES.has(item.category));
   const image = menuItemPopup.querySelector(".popup-item-image");
   image.src = item.img || "images/category-placeholder.svg";
   image.alt = item.alt;

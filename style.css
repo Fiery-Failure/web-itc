@@ -161,6 +161,16 @@ h1 {
   margin-bottom: 0.5rem;
 }
 
+.menu-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.menu-intro h1 {
+  margin-bottom: 0;
+}
+
 h2 {
   font-size: 1.65rem;
   margin-bottom: 1.25rem;
@@ -313,7 +323,7 @@ h2 {
   width: 100%;
   max-width: 450px;
   border-collapse: collapse;
-  margin: 0 auto 1.75rem;
+  margin-bottom: 1.75rem;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -330,11 +340,6 @@ h2 {
 
 #hours th, #hours td {
   padding: 0.65rem 0.75rem;
-  border-bottom: 1px solid var(--border-latte);
-}
-
-#hours span:first-child {
-  padding-bottom: 0.25rem;
   border-bottom: 1px solid var(--border-latte);
 }
 
@@ -418,6 +423,20 @@ h2 {
 }
 
 #category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+#category-list .category-group {
+  width: 100%;
+}
+
+#category-list .category-group h2 {
+  margin-bottom: 1.25rem;
+}
+
+#category-list .category-group-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
@@ -462,6 +481,23 @@ h2 {
   left: 1rem;
   font-size: 1.2rem;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.65);
+}
+
+#category-list .beverage-group .category-group-cards {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  gap: 2rem;
+  justify-content: center;
+}
+
+#category-list .beverage-group .category-card {
+  height: auto;
+  aspect-ratio: 4 / 6;
+}
+
+@media (max-width: 500px) {
+  #category-list .beverage-group .category-group-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .back-to-categories {
@@ -524,6 +560,11 @@ h2 {
   object-fit: cover;
   margin-bottom: 0.5rem;
   background-color: var(--bg-card);
+}
+
+#menu-list.beverages .item-image {
+  height: auto;
+  aspect-ratio: 3 / 4;
 }
 
 .menu-item .item-name {
@@ -738,6 +779,11 @@ h2 {
   object-fit: cover;
   margin-bottom: 1rem;
   background-color: var(--bg-card);
+}
+
+#menu-item-popup.beverages .popup-item-image {
+  height: auto;
+  aspect-ratio: 3 / 4;
 }
 
 #menu-item-popup .popup-item-name {
