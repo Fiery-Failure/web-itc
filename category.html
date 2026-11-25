@@ -50,22 +50,32 @@
 
     <template id="menu-item-template">
       <article class="menu-item">
-        <img class="item-image" src="images/category-placeholder.svg" alt="">
-        <h2 class="item-name"></h2>
-        <p class="item-description"></p>
-        <p class="item-price"></p>
-        <div class="item-hot-cold" hidden>
-          <button class="add-button hot-button" type="button">Hot - <span class="item-pricehot"></span></button>
-          <button class="add-button cold-button" type="button">Cold - <span class="item-pricecold"></span></button>
-        </div>
-        <button class="add-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg> Add to cart</button>
+        <button class="item-details-button" type="button">
+          <img class="item-image" src="images/category-placeholder.svg" alt="">
+          <span class="item-name"></span>
+          <span class="item-price"></span>
+          <span class="item-details-hint">View details</span>
+        </button>
       </article>
     </template>
+
+    <dialog id="menu-item-popup" aria-labelledby="menu-item-popup-title">
+      <img class="popup-item-image" src="images/category-placeholder.svg" alt="">
+      <h2 id="menu-item-popup-title" class="popup-item-name"></h2>
+      <p class="popup-item-description"></p>
+      <p class="popup-item-price"></p>
+      <div class="item-hot-cold popup-item-hot-cold" hidden>
+        <button class="add-button hot-button" type="button">Hot - <span class="item-pricehot"></span></button>
+        <button class="add-button cold-button" type="button">Cold - <span class="item-pricecold"></span></button>
+      </div>
+      <button class="add-button popup-add-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-plus"></use></svg> Add to cart</button>
+      <button id="close-menu-item-popup" type="button">Close</button>
+    </dialog>
 
     <dialog id="cart-popup">
       <h2>Your order</h2>
       <div id="cart-lines"></div>
-      <p>Total: <strong id="cart-total">₱0</strong></p>
+      <p>Total: <strong id="cart-total">₱0.00</strong></p>
       <button id="checkout-button" type="button"><svg class="icon" aria-hidden="true"><use href="#i-send"></use></svg> Place order</button>
       <button id="close-cart" type="button"><svg class="icon" aria-hidden="true"><use href="#i-x"></use></svg> Close</button>
     </dialog>
@@ -83,9 +93,14 @@
       <p id="copy-status" aria-live="polite"></p>
       <div id="order-footer">
         <button id="back-to-cart" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-back"></use></svg> Back to cart</button>
+        <button id="cancel-order" class="order-btn secondary" type="button">Cancel order</button>
         <button id="done-order" class="order-btn secondary" type="button"><svg class="icon" aria-hidden="true"><use href="#i-check"></use></svg> Done (clear cart)</button>
       </div>
     </dialog>
+
+    <div id="status-popup" role="status" aria-live="polite" aria-atomic="true" hidden>
+      <p id="status-message"></p>
+    </div>
   </main>
 
   <footer id="site-footer">
